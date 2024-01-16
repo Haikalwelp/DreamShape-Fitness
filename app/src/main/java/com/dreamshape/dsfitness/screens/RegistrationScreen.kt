@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,7 +33,9 @@ import com.dreamshape.dsfitness.RegistrationViewModel
 import com.dreamshape.dsfitness.components.DSButton
 import com.dreamshape.dsfitness.components.DSInputField
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
@@ -41,7 +45,21 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
+    val registrationState by viewModel.registrationState.observeAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(registrationState) {
+        when (registrationState) {
+            RegistrationViewModel.RegistrationState.EMAIL_ALREADY_REGISTERED -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar("Email already registered")
+                }
+            }
+            // Handle other states if needed
+            else -> {}
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,7 +108,7 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
             onValueChange = { password = it },
             label = "Password",
             leadingIcon = Icons.Default.Lock,
-            isPassword = true // No visibility toggle, always use password transformation
+            isPassword = true
         )
         Spacer(Modifier.height(32.dp))
 
@@ -100,6 +118,7 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
                 viewModel.registerUser(firstName, lastName, email, password)
             }
         )
+        SnackbarHost(hostState = snackbarHostState)
     }
 }
-        // ... Add more UI components for Google and Facebook sign-in, and login navigation
+
