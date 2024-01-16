@@ -35,10 +35,11 @@ import com.dreamshape.dsfitness.components.DSInputField
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 
 @Composable
-fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
+fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(), navController: NavController) {
     // Text field states
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -51,7 +52,13 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
 
     LaunchedEffect(registrationState) {
         when (registrationState) {
+            RegistrationViewModel.RegistrationState.SUCCESS -> {
+                viewModel.userFirstName.value?.let { firstName ->
+                    navController.navigate("success/$firstName")
+                }
+            }
             RegistrationViewModel.RegistrationState.EMAIL_ALREADY_REGISTERED -> {
+                // Handle email already registered case
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar("Email already registered")
                 }
@@ -121,4 +128,3 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
         SnackbarHost(hostState = snackbarHostState)
     }
 }
-
