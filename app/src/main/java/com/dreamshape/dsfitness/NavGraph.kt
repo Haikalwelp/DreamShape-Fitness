@@ -29,7 +29,7 @@ fun DSFitnessNavGraph(navController: NavHostController) {
             OnboardingScreen(navController = navController) // Pass the NavController here
         }
         composable(Destinations.RegistrationScreen) {
-            RegistrationScreen(viewModel = viewModel()) // Pass the viewModel instance
+            RegistrationScreen(viewModel = viewModel(), navController) // Pass the viewModel instance
         }
         composable(
             route = "success/{firstName}",

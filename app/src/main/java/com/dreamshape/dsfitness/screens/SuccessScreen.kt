@@ -49,7 +49,7 @@ fun SuccessScreen(userName: String, userViewModel: LoginViewModel.UserViewModel 
 
         // Continue button
         DSButton(
-            text = "Go To Home",
+            text = "Complete Your Profile",
             onClick = onContinueClicked
         )
     }
