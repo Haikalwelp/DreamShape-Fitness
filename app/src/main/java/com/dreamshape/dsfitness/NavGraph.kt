@@ -1,5 +1,6 @@
 package com.dreamshape.dsfitness
 
+import CompleteProfileScreen
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -16,7 +17,8 @@ object Destinations {
     const val WelcomeScreen = "welcome"
     const val OnboardingScreen = "onboarding"
     const val RegistrationScreen = "registration"
-    const val SuccessScreen = "success"
+    const val SuccessScreen = "success/{firstName}"
+    const val CompleteProfileScreen = "completeProfile"
 }
 
 @Composable
@@ -32,17 +34,15 @@ fun DSFitnessNavGraph(navController: NavHostController) {
             RegistrationScreen(viewModel = viewModel(), navController) // Pass the viewModel instance
         }
         composable(
-            route = "success/{firstName}",
+            route = Destinations.SuccessScreen,
             arguments = listOf(navArgument("firstName") { type = NavType.StringType })
         ) { backStackEntry ->
-            // Extracting the argument
             val firstName = backStackEntry.arguments?.getString("firstName") ?: ""
-            SuccessScreen(userName = firstName) {
-                // Define the action to take when "Go To Home" is clicked
-                // For example, navigate to the home screen
-            }
+            SuccessScreen(userName = firstName, navController = navController)
         }
-
+        composable(Destinations.CompleteProfileScreen) {
+            CompleteProfileScreen() // Ensure this is the correct function from RegisterCont.kt
+        }
     }
 }
 

@@ -13,6 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.dreamshape.dsfitness.Destinations
 import com.dreamshape.dsfitness.LoginViewModel
 import com.dreamshape.dsfitness.R
 import com.dreamshape.dsfitness.components.DSButton
@@ -20,7 +22,7 @@ import com.dreamshape.dsfitness.components.OnboardingText
 import com.dreamshape.dsfitness.components.OnboardingTitle
 
 @Composable
-fun SuccessScreen(userName: String, userViewModel: LoginViewModel.UserViewModel = viewModel(), onContinueClicked: () -> Unit) {
+fun SuccessScreen(userName: String, navController: NavController, userViewModel: LoginViewModel.UserViewModel = viewModel()) {
     // Assuming the success image is stored in the drawable resource folder
     val successImage: Painter = painterResource(id = R.drawable.success)
     Column(
@@ -50,7 +52,7 @@ fun SuccessScreen(userName: String, userViewModel: LoginViewModel.UserViewModel 
         // Continue button
         DSButton(
             text = "Complete Your Profile",
-            onClick = onContinueClicked
+            onClick = { navController.navigate(Destinations.CompleteProfileScreen) }
         )
     }
 }

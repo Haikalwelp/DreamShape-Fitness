@@ -60,6 +60,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation ("androidx.compose.material:material:1.5.4")
     implementation ("androidx.lifecycle:lifecycle-livedata:2.7.0")
 
     implementation("androidx.navigation:navigation-compose:2.7.6")
@@ -73,6 +74,12 @@ dependencies {
 
     implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
     implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    implementation ("androidx.compose.material:material")
+    implementation ("androidx.compose.material:material-icons-core")
+    implementation ("androidx.compose.material:material-icons-extended")
 
 
 
