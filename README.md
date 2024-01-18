@@ -1,4 +1,4 @@
-# FitYou : Body Fitness App
+# DreamShape Fitness
 This is a Body Fitness App developed for Android using Jetpack Compose, MVVM architecture, and Kotlin Coroutines. The app is designed to help users track and improve their fitness levels, making it easier for them to achieve their health and fitness goals.
 
 ## Features
@@ -13,8 +13,3 @@ This is a Body Fitness App developed for Android using Jetpack Compose, MVVM arc
 - Personalized workout recommendations based on user goals.
 - Community features like social sharing and challenges to keep users engaged.
 - And more!
-
-## Prerequisites
-Before you begin, ensure you have met the following requirements:
-- Android Studio installed on your development machine.
-- Basic knowledge of Android app development using Kotlin and Jetpack Compose.
