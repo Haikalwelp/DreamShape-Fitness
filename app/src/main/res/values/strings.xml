@@ -1,0 +1,133 @@
+<resources>
+    <string name="app_name">Fit You</string>
+    <string name="delete_workout_plan">Delete Workout Plan?</string>
+    <string name="data_deletion_alert_text">All your saved data will be lost</string>
+    <string name="confirm">confirm</string>
+    <string name="dismiss">dismiss</string>
+    <string name="close">close</string>
+    <string name="your_schedule">Your schedule</string>
+    <string name="hi">Hi</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="login">Login</string>
+    <string name="sign_up_text">Don\'t have an account yet?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="exercises">Exercises</string>
+    <string name="chest">chest</string>
+    <string name="shoulders">shoulders</string>
+    <string name="biceps">biceps</string>
+    <string name="triceps">triceps</string>
+    <string name="upper_back">upper back</string>
+    <string name="lats">lats</string>
+    <string name="calves">calves</string>
+    <string name="hamstrings">hamstrings</string>
+    <string name="quads">quads</string>
+    <string name="empty_plan_text">You haven\'t set a workout plan yet</string>
+    <string name="welcome">Welcome</string>
+    <string name="get_started">get started</string>
+    <string name="rest_view_text">take a rest.</string>
+    <string name="no_sessions_text">No sessions scheduled</string>
+    <string name="log">Log</string>
+    <string name="sets_stat">Sets:</string>
+    <string name="min_weight_stat">Min weight:</string>
+    <string name="reps_stat">Reps:</string>
+    <string name="max_weight_stat">Max weight:</string>
+    <string name="add_new_exercise">Add new exercise</string>
+    <string name="exercise">Exercise</string>
+    <string name="equipments">equipments</string>
+    <string name="add">add</string>
+    <string name="please_enter_exercise_name">please enter the exercise name</string>
+    <string name="signup">Signup</string>
+    <string name="enter_name_hint">enter your name</string>
+    <string name="enter_email_hint">enter email</string>
+    <string name="enter_password_hint">password</string>
+    <string name="confirm_password_hint">confirm password</string>
+    <string name="continue_text">continue</string>
+    <string name="your_stats">Your stats</string>
+    <string name="sets">Sets</string>
+    <string name="kg">Kg</string>
+    <string name="reps">Reps</string>
+    <string name="edit">edit</string>
+    <string name="add_exercise_heading">Add an exercise</string>
+    <string name="set_up_workout_plan_heading">Set up a workout plan</string>
+    <string name="choose_a_name">Choose a name</string>
+    <string name="select_training_days">Select training days</string>
+    <string name="difficulty_level">Difficulty level</string>
+    <string name="duration">Duration</string>
+    <string name="minutes">min</string>
+    <string name="save">save</string>
+    <string name="edit_set">edit set</string>
+    <string name="enter_valid_data">please enter valid data</string>
+    <string name="workout_ongoing">workout ongoing</string>
+    <string name="start_workout_to_edit">you must start workout to edit it</string>
+    <string name="home">Home</string>
+    <string name="workout">Workout</string>
+    <string name="stats">Stats</string>
+    <string name="workout_details">Workout Details</string>
+    <string name="stats_details">Stats Details</string>
+    <string name="profile">Profile</string>
+    <string name="beginner">Beginner</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="advanced">Advanced</string>
+    <string name="barbell">Barbell</string>
+    <string name="kettleBell">Kettle Bell</string>
+    <string name="bodyWeight">Body Weight</string>
+    <string name="resistanceBands">Resistance Bands</string>
+    <string name="machine">Machine</string>
+    <string name="smithMachine">Smith Machine</string>
+    <string name="rope">Rope</string>
+    <string name="cable">Cable</string>
+    <string name="dumbbells">Dumbbells</string>
+    <string name="equipment">equipment</string>
+    <string name="logout">Logout</string>
+    <string name="logout_alert_text">Are you sure you want to log out?</string>
+    <string name="exit">Close App</string>
+    <string name="exit_alert_text">You\'re about to exit the app</string>
+    <string name="google_sign_in_error1">Server is still signing out the user</string>
+
+    <string name="onboarding_title_one">Welcome to Fit You</string>
+    <string name="onboarding_title_two">Fuel Your Body</string>
+    <string name="onboarding_title_three">Track Your Nutrition</string>
+
+    <string name="onboarding_description_one">Discover new recipes and track your nutrition effortlessly.</string>
+    <string name="onboarding_description_two">Get personalized recommendations and keep your diet on track.</string>
+    <string name="onboarding_description_three">Easily log your meals and monitor your progress towards your health goals.</string>
+
+    <string name="home_fab_scan_product">Scan product</string>
+    <string name="home_fab_search_product">Search product</string>
+    <string name="home_header_user_photo">user photo</string>
+    <string name="home_header_welcome">Welcome back,</string>
+    <string name="home_header_notifications">notifications screen</string>
+    <string name="home_stats_calories_total">%1$d kcal</string>
+    <string name="home_stats_calories_left">%1$d kcal left</string>
+    <string name="home_macro_carbs_label">Carbs</string>
+    <string name="home_macro_proteins_label">Proteins</string>
+    <string name="home_macro_fats_label">Fats</string>
+
+    <string name="product_macro_calories">"Calories (kcal)</string>
+    <string name="product_macro_carbs">Carbs (g)</string>
+    <string name="product_macro_proteins">Proteins (g)</string>
+    <string name="product_macro_fats">Fats (g)</string>
+    <string name="product_meal_type_label">Meal type</string>
+    <string name="product_quantity_label">Meal quantity</string>
+    <string name="product_quantity_unit_label">g/ml</string>
+    <string name="product_save">save product</string>
+    <string name="product_delete">Delete product</string>
+    <string name="product_image">Product image</string>
+
+    <string name="scan_camera_permission_denied">Camera Permission Denied.</string>
+
+    <string name="search_bar_reset">reset search bar</string>
+    <string name="search_bar_placeholder">"Search …</string>
+    <string name="search_bar_icon_search">Search icon</string>
+    <string name="search_bar_icon_back">Back icon</string>
+
+    <string name="button_next">Next</string>
+    <string name="button_lets_go">Let\'s go</string>
+    <string name="settings">Settings</string>
+    <string name="Search">Meal</string>
+    <string name="product">Products</string>
+
+    <string translatable="false" name="data_not_available">--</string>
+
+</resources>
