@@ -31,9 +31,9 @@ import com.dreamshape.dsfitness.components.OnboardingTitle
 fun OnboardingScreen(navController: NavHostController) {
     val onboardingScreens = listOf(
         OnboardingData(R.drawable.frame2, "Track Your Goal", "Don't worry if you have trouble determining your goals, We can help you determine your goals and track your goals"),
-        OnboardingData(R.drawable.frame2, "Stay Healthy", "Description for screen 2"),
-        OnboardingData(R.drawable.frame3, "Monitor Progress", "Description for screen 3"),
-        OnboardingData(R.drawable.frame4, "Achieve Success", "Description for screen 4")
+        OnboardingData(R.drawable.frame2, "Get Burn", "Let’s keep burning, to achieve yours goals, it hurts only temporarily, if you give up now you will be in pain forever"),
+        OnboardingData(R.drawable.frame3, "Eat Well", "Let's start a healthy lifestyle with us, we can guide your diet every day. healthy eating is fun"),
+        OnboardingData(R.drawable.frame4, "Achieve Success", "Embrace the burn, conquer the challenge; in the rhythm of effort, find the symphony of success")
     )
 
     var currentScreen by remember { mutableStateOf(0) }
