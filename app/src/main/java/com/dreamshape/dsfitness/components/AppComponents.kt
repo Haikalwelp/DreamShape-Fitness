@@ -2,24 +2,33 @@
 
 package com.dreamshape.dsfitness.components
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.DatePickerDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -48,7 +57,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 @Composable
 fun DSImage(modifier: Modifier = Modifier, image: Painter) {
@@ -176,77 +187,64 @@ fun DSButton() {
         DSButton(text = "Get Started", onClick = {})
 }
 
-@Composable
-fun DatePickerComponent(selectedDate: String, onDateSelected: (String) -> Unit) {
-    val context = LocalContext.current
-    val datePickerDialog = MaterialDatePicker.Builder.datePicker().build()
-
-    OutlinedTextField(
-        value = if (selectedDate.isNotEmpty()) selectedDate else "Select Date",
-        onValueChange = { /* Do nothing as the date is picked from the dialog */ },
-        leadingIcon = {
-            Icon(Icons.Filled.CalendarToday, contentDescription = "Calendar Icon")
-        },
-        readOnly = true,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                datePickerDialog.show((context as AppCompatActivity).supportFragmentManager, "DATE_PICKER")
-            }
-    )
-
-    datePickerDialog.addOnPositiveButtonClickListener {
-        // Use SimpleDateFormat or any other formatting as needed
-        onDateSelected(datePickerDialog.headerText)
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun DatePickerComponentPreview() {
-    DatePickerComponent(selectedDate = "") {}
-}
 
 @Composable
-fun GenderSelectorComponent(selectedGender: String, onGenderSelected: (String) -> Unit) {
+fun GenderPicker(
+    selectedGender: String,
+    onGenderSelected: (String) -> Unit,
+    modifier: Modifier
+) {
     var expanded by remember { mutableStateOf(false) }
-    val genders = listOf("Male", "Female", "Other")
 
-    OutlinedTextField(
-        value = selectedGender,
-        onValueChange = { /* Do nothing as the gender is picked from the dropdown */ },
-        leadingIcon = {
-            Icon(Icons.Filled.Person, contentDescription = "Person Icon")
-        },
-        readOnly = true,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { expanded = true }
-    )
+    Box {
+        OutlinedTextField(
+            value = selectedGender,
+            onValueChange = {},
+            leadingIcon = { Icon(Icons.Filled.Person, contentDescription = "Person Icon") },
+            trailingIcon = {
+                Icon(
+                    Icons.Filled.ArrowDropDown,
+                    contentDescription = "Dropdown Icon",
+                    modifier = Modifier.clickable { expanded = !expanded }
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            readOnly = true
+        )
 
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { expanded = false },
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        genders.forEach { gender ->
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             DropdownMenuItem(onClick = {
-                onGenderSelected(gender)
+                onGenderSelected("Male")
                 expanded = false
             }) {
-                Text(text = gender)
+                Text(text = "Male")
+            }
+            DropdownMenuItem(onClick = {
+                onGenderSelected("Female")
+                expanded = false
+            }) {
+                Text(text = "Female")
+            }
+            DropdownMenuItem(onClick = {
+                onGenderSelected("Other")
+                expanded = false
+            }) {
+                Text(text = "Other")
             }
         }
     }
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun GenderSelectorComponentPreview() {
-    GenderSelectorComponent(selectedGender = "") {}
-}
+
+
+
 
 @Composable
 fun ImageComponent(drawableId: Int) {
@@ -262,7 +260,8 @@ fun InputFieldComponent(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    leadingIcon: @Composable (() -> Unit)? = null
+    leadingIcon: @Composable() (() -> Unit)? = null,
+    modifier: Modifier
 ) {
     OutlinedTextField(
         value = value,
@@ -275,6 +274,112 @@ fun InputFieldComponent(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
     )
 }
+
+@Composable
+fun BottomBar() {
+    var selectedItem by remember { mutableStateOf(0) }
+    val items = listOf(
+        BottomBarItem(Icons.Default.Home, "Home"),
+        BottomBarItem(Icons.Default.Person, "Profile"),
+        BottomBarItem(Icons.Default.FitnessCenter, "Workouts"),
+        BottomBarItem(Icons.Default.Map, "Map")
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF3B2645))
+            .padding(16.dp)
+            .clip(RoundedCornerShape(16.dp))
+    ) {
+        BottomNavigation(
+            modifier = Modifier.padding(8.dp),
+            backgroundColor = Color.Transparent, // Set the background color to transparent
+            contentColor = Color.White // Set the content color to white
+        ) {
+            items.forEachIndexed { index, item ->
+                BottomNavigationItem(
+                    icon = { Icon(item.icon, contentDescription = null) },
+                    label = { Text(item.title) },
+                    selected = selectedItem == index,
+                    onClick = { selectedItem = index },
+                    selectedContentColor = Color.White, // Set selected content color to white
+                    unselectedContentColor = Color(0x80FFFFFF) // Set unselected content color with 50% alpha
+                )
+            }
+        }
+    }
+}
+
+
+
+data class BottomBarItem(val icon: ImageVector, val title: String)
+
+@Preview(showBackground = true)
+@Composable
+fun BottomBarPreview() {
+    BottomBar()
+}
+
+@Composable
+fun DatePickerComponent(
+    modifier: Modifier = Modifier,
+    label: String = "Select Date",
+    onDateSelected: (String) -> Unit
+) {
+    var text by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+    val dialogState = remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { },
+        label = { Text(label) },
+        readOnly = true,
+        modifier = modifier.clickable { dialogState.value = true },
+        trailingIcon = {
+            IconButton(
+                onClick = { dialogState.value = true },
+                content = {
+                    Icon(Icons.Filled.CalendarToday, contentDescription = null)
+                }
+            )
+        }
+    )
+
+    if (dialogState.value) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val listener = DatePickerDialog.OnDateSetListener { _, y, m, d ->
+            calendar.set(y, m, d)
+            text = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            onDateSelected(text)
+            dialogState.value = false
+        }
+
+        DatePickerDialog(
+            context,
+            listener,
+            year,
+            month,
+            day
+        ).show()
+    }
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun DatePickerComponentPreview() {
+    DatePickerComponent(onDateSelected = {})
+}
+
+
+
 
 
 

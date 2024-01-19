@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -26,25 +27,32 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.dreamshape.dsfitness.Destinations
 import com.dreamshape.dsfitness.RegistrationViewModel
 import com.dreamshape.dsfitness.components.DSButton
 import com.dreamshape.dsfitness.components.DSInputField
 import kotlinx.coroutines.launch
 
 @Composable
-fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(), navController: NavController) {
-    // Text field states
+fun RegistrationScreen(
+    viewModel: RegistrationViewModel = viewModel(),
+    navController: NavController
+) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var passwordVisibility by remember { mutableStateOf(false) }
     val registrationState by viewModel.registrationState.observeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -57,15 +65,14 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(), navContro
                 }
             }
             RegistrationViewModel.RegistrationState.EMAIL_ALREADY_REGISTERED -> {
-                // Handle email already registered case
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar("Email already registered")
                 }
             }
-            // Handle other states if needed
             else -> {}
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -81,49 +88,47 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(), navContro
         )
         Spacer(Modifier.height(32.dp))
 
-        // First Name Field
-        DSInputField(
-            value = firstName,
-            onValueChange = { firstName = it },
-            label = "First Name",
-            leadingIcon = Icons.Default.Person
-        )
+        DSInputField(value = firstName, onValueChange = { firstName = it }, label = "First Name", leadingIcon = Icons.Default.Person)
         Spacer(Modifier.height(16.dp))
 
-        // Last Name Field
-        DSInputField(
-            value = lastName,
-            onValueChange = { lastName = it },
-            label = "Last Name",
-            leadingIcon = Icons.Default.Person
-        )
+        DSInputField(value = lastName, onValueChange = { lastName = it }, label = "Last Name", leadingIcon = Icons.Default.Person)
         Spacer(Modifier.height(16.dp))
 
-        // Email Field
-        DSInputField(
-            value = email,
-            onValueChange = { email = it },
-            label = "Email",
-            leadingIcon = Icons.Default.Email
-        )
+        DSInputField(value = email, onValueChange = { email = it }, label = "Email", leadingIcon = Icons.Default.Email)
         Spacer(Modifier.height(16.dp))
 
-        // Password Field
-        DSInputField(
-            value = password,
-            onValueChange = { password = it },
-            label = "Password",
-            leadingIcon = Icons.Default.Lock,
-            isPassword = true
-        )
+        DSInputField(value = password, onValueChange = { password = it }, label = "Password", leadingIcon = Icons.Default.Lock, isPassword = true)
         Spacer(Modifier.height(32.dp))
 
-        DSButton(
-            text = "Register",
-            onClick = {
-                viewModel.registerUser(firstName, lastName, email, password)
+        DSButton(text = "Register", onClick = { viewModel.registerUser(firstName, lastName, email, password) })
+
+        // ClickableText for "Have an account? Login"
+        val annotatedString = buildAnnotatedString {
+            withStyle(style = SpanStyle(color = Color.Gray)) {
+                append("Have an account? ")
+            }
+            withStyle(style = SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
+                append("Login")
+                addStringAnnotation(
+                    tag = "LOGIN",
+                    annotation = "Login",
+                    start = length - "Login".length,
+                    end = length
+                )
+            }
+        }
+
+        ClickableText(
+            text = annotatedString,
+            modifier = Modifier.padding(16.dp),
+            onClick = { offset ->
+                annotatedString.getStringAnnotations(tag = "LOGIN", start = offset, end = offset)
+                    .firstOrNull()?.let {
+                        navController.navigate(Destinations.LoginScreen)
+                    }
             }
         )
+
         SnackbarHost(hostState = snackbarHostState)
     }
 }

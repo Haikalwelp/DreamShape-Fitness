@@ -1,5 +1,7 @@
 package com.dreamshape.dsfitness
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +10,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+
 
 class RegistrationViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
@@ -103,6 +109,23 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    fun checkUserProfileComplete(onComplete: (Boolean) -> Unit) {
+        val userId = auth.currentUser?.uid ?: return
+
+        FirebaseFirestore.getInstance().collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                val isComplete = document.contains("gender") &&
+                        document.contains("dateOfBirth") &&
+                        document.contains("weight") &&
+                        document.contains("height")
+                onComplete(isComplete)
+            }
+            .addOnFailureListener {
+                // Handle failure (e.g., assume profile is incomplete or show an error)
+                onComplete(false)
+            }
+    }
+
     enum class LoginState {
         IDLE,
         LOADING,
@@ -130,4 +153,85 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
+}
+
+class ProfileCompletionViewModel : ViewModel() {
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
+    private val _profileCompletionState = MutableLiveData<ProfileCompletionState>()
+    val profileCompletionState: LiveData<ProfileCompletionState> = _profileCompletionState
+
+    fun completeUserProfile(gender: String, dateOfBirth: String, weight: String, height: String) {
+        val userId = auth.currentUser?.uid ?: return
+
+        val userProfile = hashMapOf(
+            "gender" to gender,
+            "dateOfBirth" to dateOfBirth,
+            "weight" to weight,
+            "height" to height
+        )
+
+        db.collection("users").document(userId)
+            .update(userProfile as Map<String, Any>)
+            .addOnSuccessListener {
+                _profileCompletionState.value = ProfileCompletionState.SUCCESS
+            }
+            .addOnFailureListener {
+                _profileCompletionState.value = ProfileCompletionState.ERROR
+            }
+    }
+
+    enum class ProfileCompletionState {
+        IDLE,
+        SUCCESS,
+        ERROR
+    }
+}
+
+class HomeViewModel : ViewModel() {
+    private val db = FirebaseFirestore.getInstance()
+    private val _userData = MutableLiveData<UserData>()
+    val userData: LiveData<UserData> = _userData
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun fetchUserData(userId: String) {
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val fullName = "${document.getString("firstName")} ${document.getString("lastName")}"
+                    val dob = document.getString("dateOfBirth")
+                    val weight = document.get("weight")?.toString()?.toDoubleOrNull()
+                    val height = document.get("height")?.toString()?.toDoubleOrNull()
+
+                    val age = dob?.let { calculateAge(it) }
+                    val bmi = if (weight != null && height != null) calculateBMI(weight, height) else null
+
+                    _userData.value = UserData(fullName, age, height, weight, bmi)
+                }
+            }
+            .addOnFailureListener {
+                // Handle errors
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateAge(dob: String): Int {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val birthDate = LocalDate.parse(dob, formatter)
+        return ChronoUnit.YEARS.between(birthDate, LocalDate.now()).toInt()
+    }
+
+    private fun calculateBMI(weight: Double, height: Double): Double {
+        val heightInMeters = height / 100
+        return weight / (heightInMeters * heightInMeters)
+    }
+
+    data class UserData(
+        val fullName: String?,
+        val age: Int?,
+        val height: Double?,
+        val weight: Double?,
+        val bmi: Double?
+    )
 }
