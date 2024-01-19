@@ -14,9 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dreamshape.dsfitness.R
-import com.example.myapplication.R
-import com.example.yourapp.ui.components.TopBar
-import com.example.yourapp.ui.components.WorkoutOptionCard
+import com.dreamshape.dsfitness.components.TopBar
+import com.dreamshape.dsfitness.components.WorkoutOptionCard
 
 @Composable
 fun WorkoutPlanScreen() {
