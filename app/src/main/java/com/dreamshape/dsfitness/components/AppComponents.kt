@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -28,7 +27,6 @@ import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -276,7 +275,7 @@ fun InputFieldComponent(
 }
 
 @Composable
-fun BottomBar() {
+fun BottomBar(navController: NavHostController){
     var selectedItem by remember { mutableStateOf(0) }
     val items = listOf(
         BottomBarItem(Icons.Default.Home, "Home"),
@@ -285,31 +284,41 @@ fun BottomBar() {
         BottomBarItem(Icons.Default.Map, "Map")
     )
 
-    Card(
+    BottomNavigation(
+        backgroundColor = Color(0xFF3B2645),
+        contentColor = Color.White,
+        elevation = 8.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF3B2645))
-            .padding(16.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .height(56.dp)
     ) {
-        BottomNavigation(
-            modifier = Modifier.padding(8.dp),
-            backgroundColor = Color.Transparent, // Set the background color to transparent
-            contentColor = Color.White // Set the content color to white
-        ) {
-            items.forEachIndexed { index, item ->
-                BottomNavigationItem(
-                    icon = { Icon(item.icon, contentDescription = null) },
-                    label = { Text(item.title) },
-                    selected = selectedItem == index,
-                    onClick = { selectedItem = index },
-                    selectedContentColor = Color.White, // Set selected content color to white
-                    unselectedContentColor = Color(0x80FFFFFF) // Set unselected content color with 50% alpha
-                )
-            }
+        items.forEachIndexed { index, item ->
+            BottomNavigationItem(
+                icon = {
+                    Icon(
+                        item.icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                label = { Text(item.title, fontSize = 12.sp) },
+                selected = selectedItem == index,
+                onClick = {
+                    selectedItem = index
+                    when (index) {
+                        0 -> navController.navigate("home") // Navigate to HomeScreen
+                        1 -> navController.navigate("manageProfile") // Navigate to ManageProfileScreen
+                        // Other navigation items can be left as is for now
+                    }
+                },
+                selectedContentColor = Color.White,
+                unselectedContentColor = Color(0x80FFFFFF),
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }
+
 
 
 
@@ -318,7 +327,7 @@ data class BottomBarItem(val icon: ImageVector, val title: String)
 @Preview(showBackground = true)
 @Composable
 fun BottomBarPreview() {
-    BottomBar()
+    BottomBar(navController = NavHostController(LocalContext.current))
 }
 
 @Composable

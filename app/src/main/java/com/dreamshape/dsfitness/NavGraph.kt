@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.dreamshape.dsfitness.screens.HomeScreen
 import com.dreamshape.dsfitness.screens.LoginScreen
+import com.dreamshape.dsfitness.screens.ManageProfileScreen
 import com.dreamshape.dsfitness.screens.OnboardingScreen
 import com.dreamshape.dsfitness.screens.RegistrationScreen
 import com.dreamshape.dsfitness.screens.SuccessScreen
@@ -51,7 +52,7 @@ fun DSFitnessNavGraph(navController: NavHostController) {
             SuccessScreen(userName = firstName, navController = navController)
         }
         composable(Destinations.CompleteProfileScreen) {
-            CompleteProfileScreen() // Ensure this is the correct function from RegisterCont.kt
+            CompleteProfileScreen(navController) // Ensure this is the correct function from RegisterCont.kt
 
 
         }
@@ -60,7 +61,10 @@ fun DSFitnessNavGraph(navController: NavHostController) {
             LoginScreen(navController = navController)
         }
         composable(Destinations.HomeScreen) {
-            HomeScreen() // Call your HomeScreen composable here
+            HomeScreen(navController = navController) // Call your HomeScreen composable here
+        }
+        composable("manageProfile") {
+            ManageProfileScreen() // Assuming this is the correct composable for the profile screen
         }
     }
 }

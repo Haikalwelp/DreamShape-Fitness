@@ -1,5 +1,6 @@
 package com.dreamshape.dsfitness.screens
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,12 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.dreamshape.dsfitness.HomeViewModel
+import com.dreamshape.dsfitness.components.BottomBar
 import com.google.firebase.auth.FirebaseAuth
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(homeViewModel: HomeViewModel = viewModel(),navController: NavHostController) {
     val userData by homeViewModel.userData.observeAsState()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -34,18 +39,30 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text(
-            text = "Welcome, ${userData?.fullName ?: "Guest"}",
-            style = MaterialTheme.typography.h6,
-            modifier = Modifier.align(Alignment.Start)
-        )
+    Scaffold(
+        bottomBar = {
+            BottomBar(navController = navController) // Include the BottomBar composable here
+        },
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Welcome, ${userData?.fullName ?: "Guest"}",
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier.align(Alignment.Start)
+                )
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-        UserDataContainer(userData)
-    }
+                UserDataContainer(userData)
+            }
+        }
+    )
 }
+
 
 @Composable
 fun UserDataContainer(userData: HomeViewModel.UserData?) {

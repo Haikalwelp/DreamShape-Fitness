@@ -2,6 +2,10 @@ package com.dreamshape.dsfitness
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -235,3 +239,67 @@ class HomeViewModel : ViewModel() {
         val bmi: Double?
     )
 }
+
+class ManageUserProfileViewModel : ViewModel() {
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
+    private val _manageProfileState = MutableLiveData<ManageProfileState>()
+    val manageProfileState: LiveData<ManageProfileState> = _manageProfileState
+
+    fun updateProfile(weight: String, height: String) {
+        val userId = auth.currentUser?.uid ?: return
+
+        val userProfile = hashMapOf(
+            "weight" to weight,
+            "height" to height
+        )
+
+        db.collection("users").document(userId)
+            .update(userProfile as Map<String, Any>)
+            .addOnSuccessListener {
+                _manageProfileState.value = ManageProfileState.SUCCESS
+            }
+            .addOnFailureListener {
+                _manageProfileState.value = ManageProfileState.ERROR
+            }
+    }
+    var selectedGender by mutableStateOf("Choose Gender")
+    var selectedDate by mutableStateOf(TextFieldValue(""))
+    var weight by mutableStateOf("")
+    var height by mutableStateOf("")
+    fun fetchUserProfile() {
+        val userId = auth.currentUser?.uid ?: return
+
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val userData = document.data
+                    // Extract user details from userData and update your LiveData or mutableStateOf variables
+                    // For example:
+                    val gender = userData?.get("gender") as? String ?: "Choose Gender"
+                    val dateOfBirth = userData?.get("dateOfBirth") as? String ?: ""
+                    val userWeight = userData?.get("weight") as? String ?: ""
+                    val userHeight = userData?.get("height") as? String ?: ""
+
+                    // Update your LiveData or mutableStateOf variables with the fetched data
+                    selectedGender = gender
+                    selectedDate = TextFieldValue(dateOfBirth)
+                    weight = userWeight
+                    height = userHeight
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Handle the error
+            }
+    }
+
+    enum class ManageProfileState {
+        IDLE,
+        SUCCESS,
+        ERROR
+    }
+}
+
+
