@@ -57,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -395,115 +396,6 @@ fun DatePickerComponent(
         ).show()
     }
 }
-@Composable
-fun ProfileHeader(
-    userName: String,
-    userProgram: String,
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        // Placeholder for the user's profile picture
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "User Profile Picture",
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-        )
-        androidx.compose.material.Text(
-            text = userName,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-        androidx.compose.material.Text(
-            text = userProgram,
-            fontSize = 16.sp,
-            color = Color.Gray
-        )
-
-    }
-}
-
-@Composable
-fun ProfileInfoBox(
-    infoValue: String,
-    infoLabel: String
-) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        androidx.compose.material.Text(
-            text = infoValue,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 18.sp
-        )
-        androidx.compose.material.Text(
-            text = infoLabel,
-            fontSize = 16.sp,
-            color = Color.Gray
-        )
-    }
-}
-
-@Composable
-fun ProfileSectionHeader(title: String) {
-    androidx.compose.material.Text(
-        text = title,
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
-        modifier = Modifier
-            .padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
-    )
-}
-
-@Composable
-fun ProfileListItem(
-    title: String,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        androidx.compose.material.Text(
-            text = title,
-            fontSize = 16.sp,
-            modifier = Modifier.weight(1f)
-        )
-        androidx.compose.material.Icon(
-            imageVector = Icons.Default.ArrowForward,
-            contentDescription = "Go to $title"
-        )
-    }
-}
-
-@Composable
-fun ProfileToggleItem(
-    title: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        androidx.compose.material.Text(
-            text = title,
-            fontSize = 16.sp,
-            modifier = Modifier.weight(1f)
-        )
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
-    }
-}
 
 @Composable
 fun TopBar(title: String, onBackClick: () -> Unit, onActionClick: () -> Unit) {
@@ -598,16 +490,16 @@ fun NutritionPlate() {
 }
 
 @Composable
-fun FoodItem(name: String, calories: Int, iconId: Int) {
+fun FoodItem(name: String, calories: Int, drawableId:Int) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        androidx.compose.material.Icon(
-            painter = painterResource(id = iconId),
+        Image(
+            painter = painterResource(id = drawableId),
             contentDescription = null, // decorative
             modifier = Modifier.size(40.dp).weight(1f),
-            tint = androidx.compose.material.MaterialTheme.colors.onSurface
+            contentScale = ContentScale.Fit, // You can adjust contentScale as needed
         )
         androidx.compose.material.Text(
             text = name,

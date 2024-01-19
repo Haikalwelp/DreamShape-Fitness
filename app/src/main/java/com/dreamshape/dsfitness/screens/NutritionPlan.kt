@@ -23,11 +23,11 @@ fun NutritionScreen() {
         Column(modifier = Modifier.padding(paddingValues)) {
             SectionTitle(title = "What to eat?")
             NutritionPlate()
-            FoodItem(name = "Rice", calories = 80, iconId = R.drawable.rice)
-            FoodItem(name = "Tea without sugar", calories = 0, iconId = R.drawable.tea)
-            FoodItem(name = "Egg", calories = 68, iconId = R.drawable.egg)
-            FoodItem(name = "Salmon", calories = 250, iconId = R.drawable.fish)
-            FoodItem(name = "Bread", calories = 300, iconId = R.drawable.bread)
+            FoodItem(name = "Rice", calories = 80, drawableId = R.drawable.rice)
+            FoodItem(name = "Tea without sugar", calories = 0, drawableId = R.drawable.tea)
+            FoodItem(name = "Egg", calories = 68, drawableId = R.drawable.egg)
+            FoodItem(name = "Salmon", calories = 250, drawableId = R.drawable.fish)
+            FoodItem(name = "Bread", calories = 300, drawableId = R.drawable.bread)
             MoreInformationButton(onClick = { /* Handle more info click */ })
         }
     }
