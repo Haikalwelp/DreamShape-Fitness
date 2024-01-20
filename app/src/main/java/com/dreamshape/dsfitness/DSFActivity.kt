@@ -11,15 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.dreamshape.dsfitness.ui.theme.DSFitnessTheme
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize Google Places
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, "AIzaSyCsNVoVdvxpIyYcQfuCeIUi45gKDCSwSss") // Replace with your actual API key
+        }
+
         setContent {
-            MaterialTheme(
-                colors = lightColors() // This applies the default light color scheme
-            ) {
+            MaterialTheme(colors = lightColors()) { // This applies the default light color scheme
                 // Create a NavController
                 val navController = rememberNavController()
 

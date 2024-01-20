@@ -336,6 +336,7 @@ fun BottomBar(navController: NavHostController){
                         1 -> navController.navigate("manageProfile")
                         2 -> navController.navigate("workoutPlan")// Navigate to ManageProfileScreen
                         3 -> navController.navigate("nutritionPlan")
+                        4 -> navController.navigate("map")
                     }
                 },
                 selectedContentColor = Color.White,

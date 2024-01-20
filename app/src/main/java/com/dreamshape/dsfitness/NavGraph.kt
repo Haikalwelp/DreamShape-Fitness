@@ -14,6 +14,7 @@ import androidx.navigation.navArgument
 import com.dreamshape.dsfitness.screens.HomeScreen
 import com.dreamshape.dsfitness.screens.LoginScreen
 import com.dreamshape.dsfitness.screens.ManageProfileScreen
+import com.dreamshape.dsfitness.screens.MapScreen
 import com.dreamshape.dsfitness.screens.NutritionScreen
 import com.dreamshape.dsfitness.screens.OnboardingScreen
 import com.dreamshape.dsfitness.screens.RegistrationScreen
@@ -96,6 +97,9 @@ fun DSFitnessNavGraph(navController: NavHostController) {
         }
         composable("nutritionPlan") {
             NutritionScreen(navController = navController) // Call your HomeScreen composable here
+        }
+        composable("map") {
+            MapScreen() // Call your HomeScreen composable here
         }
     }
 }
