@@ -25,8 +25,6 @@ import androidx.navigation.NavHostController
 import com.dreamshape.dsfitness.HomeViewModel
 import com.dreamshape.dsfitness.components.BottomBar
 import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.ui.graphics.Color
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @RequiresApi(Build.VERSION_CODES.O)
@@ -52,16 +50,14 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(),navController: NavHost
                     .padding(16.dp)
             ) {
                 Text(
-                    Text(
-                        text = "Welcome, ${userData?.fullName ?: "Guest"}",
-                        style = MaterialTheme.typography.h6.copy(color = Color.White), // Override color here
-                        modifier = Modifier.align(Alignment.Start)
-                    )
+                    text = "Welcome, ${userData?.fullName ?: "Guest"}",
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier.align(Alignment.Start)
+                )
 
+                Spacer(modifier = Modifier.height(16.dp))
 
-                            Spacer(Modifier.height(16.dp))
-
-                UserDataContainer(userData))
+                UserDataContainer(userData)
             }
         }
     )

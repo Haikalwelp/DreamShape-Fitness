@@ -17,7 +17,7 @@ fun ABSWorkoutScreen() {
         .padding(top = 16.dp)
     ) {
         // Header
-        ExerciseHeader(text = "ABS")
+        ExerciseHeader(text = "Abs Workout")
 
         // Exercise List
         // You will replace these with your data model, which holds exercise information

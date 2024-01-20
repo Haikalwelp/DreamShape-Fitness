@@ -1,24 +1,26 @@
 package com.dreamshape.dsfitness.screens
 
-import com.dreamshape.dsfitness.R
-import com.dreamshape.dsfitness.components.MoreInformationButton
-import com.dreamshape.dsfitness.components.NutritionHeader
-import com.dreamshape.dsfitness.components.SectionTitle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import com.dreamshape.dsfitness.R
+import com.dreamshape.dsfitness.components.BottomBar
 import com.dreamshape.dsfitness.components.FoodItem
+import com.dreamshape.dsfitness.components.MoreInformationButton
 import com.dreamshape.dsfitness.components.NutritionPlate
+import com.dreamshape.dsfitness.components.SectionTitle
 
 @Composable
-fun NutritionScreen() {
+fun NutritionScreen(navController: NavHostController) {
     Scaffold(
-        topBar = {
-            NutritionHeader(title = "Nutritional Guidance", onBackClick = { /* Handle back press */ })
-        }
+        bottomBar = {
+            BottomBar(navController = navController) // Include the BottomBar composable here
+        },
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             SectionTitle(title = "What to eat?")
@@ -36,5 +38,5 @@ fun NutritionScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNutritionScreen() {
-    NutritionScreen()
+    NutritionScreen(navController = NavHostController(LocalContext.current))
 }

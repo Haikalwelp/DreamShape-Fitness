@@ -26,7 +26,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Switch
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -38,6 +37,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -57,7 +57,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -299,6 +298,7 @@ fun BottomBar(navController: NavHostController){
         BottomBarItem(Icons.Default.Home, "Home"),
         BottomBarItem(Icons.Default.Person, "Profile"),
         BottomBarItem(Icons.Default.FitnessCenter, "Workouts"),
+        BottomBarItem(Icons.Default.Restaurant, "Nutrition"),
         BottomBarItem(Icons.Default.Map, "Map")
     )
 
@@ -319,14 +319,15 @@ fun BottomBar(navController: NavHostController){
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                label = { Text(item.title, fontSize = 12.sp) },
+                label = { Text(item.title, fontSize = 9.sp) },
                 selected = selectedItem == index,
                 onClick = {
                     selectedItem = index
                     when (index) {
                         0 -> navController.navigate("home") // Navigate to HomeScreen
-                        1 -> navController.navigate("manageProfile") // Navigate to ManageProfileScreen
-                        // Other navigation items can be left as is for now
+                        1 -> navController.navigate("manageProfile")
+                        2 -> navController.navigate("workoutPlan")// Navigate to ManageProfileScreen
+                        3 -> navController.navigate("nutritionPlan")
                     }
                 },
                 selectedContentColor = Color.White,
@@ -423,8 +424,10 @@ fun TopBar(title: String, onBackClick: () -> Unit, onActionClick: () -> Unit) {
 fun WorkoutOptionCard(
     drawableId: Int,
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit // Adding a click listener
 ) {
+    // Wrap Card with Modifier.clickable to make it clickable
     Card(
         shape = RoundedCornerShape(10.dp),
         elevation = 2.dp,
@@ -433,6 +436,7 @@ fun WorkoutOptionCard(
             .fillMaxWidth()
             .height(150.dp)
             .clip(RoundedCornerShape(10.dp))
+            .clickable { onClick() } // Adding clickable modifier
     ) {
         Column {
             Image(
@@ -461,6 +465,7 @@ fun WorkoutOptionCard(
         }
     }
 }
+
 
 @Composable
 fun NutritionHeader(title: String, onBackClick: () -> Unit) {
