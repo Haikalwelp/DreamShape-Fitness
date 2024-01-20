@@ -62,22 +62,22 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 passwordError = "Invalid credentials"
             }
             LoginViewModel.LoginState.LOADING -> {
-                // Optionally handle loading state, if needed.
+
             }
             LoginViewModel.LoginState.ERROR -> {
-                // General error handling.
+
                 emailError = "Login error"
                 passwordError = "Login error"
             }
             else -> {
-                // Reset error messages for other states.
+
                 emailError = ""
                 passwordError = ""
             }
         }
     }
 
-    // You might want to handle the layout in a specific way, for example:
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         OnboardingTitle(text = "Welcome Back!")
         Spacer(modifier = Modifier.height(8.dp))

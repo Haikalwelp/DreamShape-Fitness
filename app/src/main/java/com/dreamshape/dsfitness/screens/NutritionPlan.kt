@@ -23,7 +23,7 @@ fun NutritionScreen(navController: NavHostController) {
 
     Scaffold(
         bottomBar = {
-            BottomBar(navController = navController) // Include the BottomBar composable here
+            BottomBar(navController = navController)
         },
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {

@@ -52,14 +52,14 @@ fun CompleteProfileScreen(navController: NavController, profileCompletionViewMod
 
     val profileCompletionState by profileCompletionViewModel.profileCompletionState.observeAsState()
 
-    // React to profile completion state changes
+
     LaunchedEffect(profileCompletionState) {
         when (profileCompletionState) {
             ProfileCompletionViewModel.ProfileCompletionState.SUCCESS -> {
                 navController.navigate(Destinations.HomeScreen)
             }
             ProfileCompletionViewModel.ProfileCompletionState.ERROR -> {
-                // Handle error (e.g., show an error message)
+
             }
             else -> {}
         }
@@ -73,7 +73,7 @@ fun CompleteProfileScreen(navController: NavController, profileCompletionViewMod
     ) {
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Placeholder for ImageComponent
+
         ImageComponent(drawableId = R.drawable.rgrimage1)
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -100,7 +100,7 @@ fun CompleteProfileScreen(navController: NavController, profileCompletionViewMod
             onGenderSelected = { newGender ->
                 selectedGender = newGender
             },
-            modifier = inputFieldWidthModifier  // Apply the common width modifier
+            modifier = inputFieldWidthModifier
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -109,7 +109,7 @@ fun CompleteProfileScreen(navController: NavController, profileCompletionViewMod
             onDateSelected = { date ->
                 selectedDate = TextFieldValue(date)
             },
-            modifier = inputFieldWidthModifier  // Apply the common width modifier
+            modifier = inputFieldWidthModifier
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -118,7 +118,7 @@ fun CompleteProfileScreen(navController: NavController, profileCompletionViewMod
             onValueChange = { weight = it },
             label = "Your Weight",
             leadingIcon = { Icon(Icons.Filled.FitnessCenter, contentDescription = "Weight Icon") },
-            modifier = inputFieldWidthModifier  // Apply the common width modifier
+            modifier = inputFieldWidthModifier
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -127,7 +127,7 @@ fun CompleteProfileScreen(navController: NavController, profileCompletionViewMod
             onValueChange = { height = it },
             label = "Your Height",
             leadingIcon = { Icon(Icons.Filled.Height, contentDescription = "Height Icon") },
-            modifier = inputFieldWidthModifier  // Apply the common width modifier
+            modifier = inputFieldWidthModifier
         )
 
         Spacer(modifier = Modifier.height(24.dp))

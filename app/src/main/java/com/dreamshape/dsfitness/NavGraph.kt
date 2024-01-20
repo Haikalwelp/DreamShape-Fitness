@@ -47,13 +47,13 @@ fun DSFitnessNavGraph(navController: NavHostController) {
             WelcomeScreen(onGetStartedClick = { navController.navigate(Destinations.OnboardingScreen) })
         }
         composable(Destinations.OnboardingScreen) {
-            OnboardingScreen(navController = navController) // Pass the NavController here
+            OnboardingScreen(navController = navController)
         }
         composable(Destinations.RegistrationScreen) {
             RegistrationScreen(
                 viewModel = viewModel(),
                 navController
-            ) // Pass the viewModel instance
+            )
         }
         composable(
             route = Destinations.SuccessScreen,
@@ -63,43 +63,43 @@ fun DSFitnessNavGraph(navController: NavHostController) {
             SuccessScreen(userName = firstName, navController = navController)
         }
         composable(Destinations.CompleteProfileScreen) {
-            CompleteProfileScreen(navController) // Ensure this is the correct function from RegisterCont.kt
+            CompleteProfileScreen(navController)
 
 
         }
         composable(Destinations.LoginScreen) {
-            // Call your LoginScreen composable here
+
             LoginScreen(navController = navController)
         }
         composable(Destinations.HomeScreen) {
-            HomeScreen(navController = navController) // Call your HomeScreen composable here
+            HomeScreen(navController = navController)
         }
         composable("manageProfile") {
-            ManageProfileScreen(navController) // Assuming this is the correct composable for the profile screen
+            ManageProfileScreen(navController)
         }
         composable(Destinations.ChestWorkoutScreen) {
-            ChestWorkoutScreen() // Call your ChestWorkoutScreen composable here
+            ChestWorkoutScreen()
         }
         composable(Destinations.ABSWorkoutScreen) {
-            ABSWorkoutScreen() // Call your ChestWorkoutScreen composable here
+            ABSWorkoutScreen()
         }
         composable(Destinations.BicepsWorkoutScreen) {
-            BicepsWorkoutScreen() // Call your ChestWorkoutScreen composable here
+            BicepsWorkoutScreen()
         }
         composable(Destinations.LegWorkoutScreen) {
-            LegWorkoutScree() // Call your ChestWorkoutScreen composable here
+            LegWorkoutScree()
         }
         composable("workoutPlan") {
-            WorkoutPlanScreen(navController) // Call your ChestWorkoutScreen composable here
+            WorkoutPlanScreen(navController)
         }
         composable("home") {
-            HomeScreen(navController = navController) // Call your HomeScreen composable here
+            HomeScreen(navController = navController)
         }
         composable("nutritionPlan") {
-            NutritionScreen(navController = navController) // Call your HomeScreen composable here
+            NutritionScreen(navController = navController)
         }
         composable("map") {
-            MapScreen() // Call your HomeScreen composable here
+            MapScreen()
         }
     }
 }

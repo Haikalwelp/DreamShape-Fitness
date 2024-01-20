@@ -70,16 +70,16 @@ private fun setUpGoogleMap(googleMap: GoogleMap, context: Context) {
 
 @SuppressLint("MissingPermission")
 private fun fetchNearbyGyms(googleMap: GoogleMap, location: LatLng, context: Context) {
-    // Create an instance of the Retrofit service
+
     val service = RetrofitInstance.retrofit.create(GooglePlacesService::class.java)
 
-    // Make the network request
+
     CoroutineScope(Dispatchers.IO).launch {
         try {
             val response = service.searchNearbyGyms(
                 location = "${location.latitude},${location.longitude}",
-                radius = 1500, // Adjust radius as needed
-                type = "gym", // "type" is deprecated, use "keyword" instead
+                radius = 1500,
+                type = "gym",
                 keyword = "gym",
                 apiKey = "AIzaSyCg_Xb_B0uUD6hTngK0UsdR37CGSfjf7oI"
             )

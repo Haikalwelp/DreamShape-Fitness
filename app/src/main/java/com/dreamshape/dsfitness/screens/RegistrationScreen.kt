@@ -140,7 +140,7 @@ fun RegistrationScreen(
         }
 
 
-        // ClickableText for "Have an account? Login"
+
         val annotatedString = buildAnnotatedString {
             withStyle(style = SpanStyle(color = Color.Gray)) {
                 append("Have an account? ")

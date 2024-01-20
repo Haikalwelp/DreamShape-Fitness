@@ -45,11 +45,11 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), navController: NavHos
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color(0xFFE0E0FF))) { // Set the background color here
-        CustomMaterialTheme { // Wrap the HomeScreen with CustomMaterialTheme
+        .background(Color(0xFFE0E0FF))) {
+        CustomMaterialTheme {
             Scaffold(
                 bottomBar = {
-                    BottomBar(navController = navController) // Include the BottomBar composable here
+                    BottomBar(navController = navController)
                 },
                 content = {
                     Column(

@@ -23,16 +23,15 @@ import java.time.temporal.ChronoUnit
 class RegistrationViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
-    // Live data to observe registration state in the UI
+
     private val _registrationState = MutableLiveData<RegistrationState>()
     val registrationState: LiveData<RegistrationState> = _registrationState
 
     fun registerUser(firstName: String, lastName: String, email: String, password: String) {
-        // Start registration with Firebase Authentication
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // User is successfully registered and signed in
-                // Now, store the additional fields in Firestore
+
                 val userId = task.result?.user?.uid ?: return@addOnCompleteListener
                 val user = hashMapOf(
                     "firstName" to firstName,
@@ -42,20 +41,20 @@ class RegistrationViewModel : ViewModel() {
                 FirebaseFirestore.getInstance().collection("users").document(userId)
                     .set(user)
                     .addOnSuccessListener {
-                        _userFirstName.value = firstName // Store the first name
+                        _userFirstName.value = firstName
                         _registrationState.value = RegistrationState.SUCCESS
                     }
                     .addOnFailureListener {
                         _registrationState.value = RegistrationState.ERROR
                     }
             } else {
-                // If sign in fails, check for the specific error code
+
                 val exception = task.exception
                 if (exception is FirebaseAuthUserCollisionException) {
-                    // Email is already registered
+
                     _registrationState.value = RegistrationState.EMAIL_ALREADY_REGISTERED
                 } else {
-                    // Other registration errors
+
                     _registrationState.value = RegistrationState.ERROR
                 }
             }
@@ -72,7 +71,7 @@ class RegistrationViewModel : ViewModel() {
                 _userFirstName.value = documentSnapshot.getString("firstName")
             }
             .addOnFailureListener {
-                // Handle the error case
+
             }
     }
 
@@ -87,7 +86,7 @@ class RegistrationViewModel : ViewModel() {
 class LoginViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
-    // Live data to observe login state in the UI
+
     private val _loginState = MutableLiveData<LoginState>()
     val loginState: LiveData<LoginState> = _loginState
 
@@ -95,10 +94,10 @@ class LoginViewModel : ViewModel() {
         _loginState.value = LoginState.LOADING
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // User is successfully logged in
+
                 _loginState.value = LoginState.SUCCESS
             } else {
-                // If login fails, dispatch error state based on exception
+
                 when (task.exception) {
                     is FirebaseAuthInvalidUserException -> {
                         _loginState.value = LoginState.INVALID_USER
@@ -126,7 +125,7 @@ class LoginViewModel : ViewModel() {
                 onComplete(isComplete)
             }
             .addOnFailureListener {
-                // Handle failure (e.g., assume profile is incomplete or show an error)
+
                 onComplete(false)
             }
     }
@@ -154,7 +153,7 @@ class LoginViewModel : ViewModel() {
                     }
                 }
             }.addOnFailureListener {
-                // Handle any errors here
+
             }
         }
     }
@@ -216,7 +215,7 @@ class HomeViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener {
-                // Handle errors
+
             }
     }
 
@@ -278,14 +277,13 @@ class ManageUserProfileViewModel : ViewModel() {
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
                     val userData = document.data
-                    // Extract user details from userData and update your LiveData or mutableStateOf variables
-                    // For example:
+
                     val gender = userData?.get("gender") as? String ?: "Choose Gender"
                     val dateOfBirth = userData?.get("dateOfBirth") as? String ?: ""
                     val userWeight = userData?.get("weight") as? String ?: ""
                     val userHeight = userData?.get("height") as? String ?: ""
 
-                    // Update your LiveData or mutableStateOf variables with the fetched data
+
                     selectedGender = gender
                     selectedDate = TextFieldValue(dateOfBirth)
                     weight = userWeight
@@ -293,7 +291,7 @@ class ManageUserProfileViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener { exception ->
-                // Handle the error
+
             }
     }
 

@@ -91,7 +91,7 @@ fun DSImage(modifier: Modifier = Modifier, image: Painter) {
         painter = image,
         contentDescription = "DS Fitness Logo",
         modifier = modifier
-            .aspectRatio(1f) // Keep the image aspect ratio 1:1
+            .aspectRatio(1f)
     )
 }
 
@@ -101,7 +101,7 @@ fun DSText(modifier: Modifier = Modifier, text: String) {
     Text(
         text = text,
         modifier = modifier,
-        textAlign = TextAlign.Center, // Center the text
+        textAlign = TextAlign.Center,
         fontSize = 38.sp,
         fontWeight = FontWeight.Bold,
         color = Color.Gray
@@ -112,7 +112,7 @@ fun DSText(modifier: Modifier = Modifier, text: String) {
 fun DSButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth() then Modifier.height(48.dp), // Adjust the height as needed
+        modifier = modifier.fillMaxWidth() then Modifier.height(48.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1D1617))
     ) {
         Text(
@@ -121,7 +121,6 @@ fun DSButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
         )
     }
 }
-
 
 
 //Onboarding Components
@@ -333,9 +332,9 @@ fun BottomBar(navController: NavHostController){
                 onClick = {
                     selectedItem = index
                     when (index) {
-                        0 -> navController.navigate("home") // Navigate to HomeScreen
+                        0 -> navController.navigate("home")
                         1 -> navController.navigate("manageProfile")
-                        2 -> navController.navigate("workoutPlan")// Navigate to ManageProfileScreen
+                        2 -> navController.navigate("workoutPlan")
                         3 -> navController.navigate("nutritionPlan")
                         4 -> navController.navigate("map")
                     }
@@ -435,9 +434,9 @@ fun WorkoutOptionCard(
     drawableId: Int,
     title: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit // Adding a click listener
+    onClick: () -> Unit
 ) {
-    // Wrap Card with Modifier.clickable to make it clickable
+
     Card(
         shape = RoundedCornerShape(10.dp),
         elevation = 2.dp,
@@ -446,7 +445,7 @@ fun WorkoutOptionCard(
             .fillMaxWidth()
             .height(150.dp)
             .clip(RoundedCornerShape(10.dp))
-            .clickable { onClick() } // Adding clickable modifier
+            .clickable { onClick() }
     ) {
         Column {
             Image(
@@ -496,7 +495,7 @@ fun NutritionHeader(title: String, onBackClick: () -> Unit) {
 
 @Composable
 fun NutritionPlate() {
-    // This would be a custom drawing or image representing the nutrition plate
+
     Image(
         painter = painterResource(id = R.drawable.nutrition_pic),
         contentDescription = "Healthy Eating Plate",
@@ -512,9 +511,9 @@ fun FoodItem(name: String, calories: Int, drawableId:Int) {
     ) {
         Image(
             painter = painterResource(id = drawableId),
-            contentDescription = null, // decorative
+            contentDescription = null,
             modifier = Modifier.size(40.dp).weight(1f),
-            contentScale = ContentScale.Fit, // You can adjust contentScale as needed
+            contentScale = ContentScale.Fit,
         )
         androidx.compose.material.Text(
             text = name,
@@ -591,12 +590,12 @@ fun ExerciseCard(
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
-            // Using GifImage to display the GIF
+
             GifImage(
                 gifUrl = gifUrl,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(16f / 9f) // Adjust aspect ratio as needed
+                    .aspectRatio(16f / 9f)
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -656,7 +655,7 @@ fun RedButton(text: String, onClick: () -> Unit) {
         colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
         modifier = Modifier
             .padding(8.dp)
-            .height(48.dp) // Adjust the height as needed
+            .height(48.dp)
     ) {
         Text(text = text, color = Color.White)
     }

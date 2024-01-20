@@ -24,7 +24,7 @@ import com.dreamshape.dsfitness.components.WorkoutOptionCard
 fun WorkoutPlanScreen(navController: NavHostController) {
     Scaffold(
         bottomBar = {
-            BottomBar(navController = navController) // Include the BottomBar composable here
+            BottomBar(navController = navController)
         },
         content = { PaddingValues ->
             Column(
@@ -35,27 +35,27 @@ fun WorkoutPlanScreen(navController: NavHostController) {
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
                 WorkoutOptionCard(
-                    drawableId = R.drawable.chest_workout, // Replace with actual resource IDs
+                    drawableId = R.drawable.chest_workout,
                     title = "CHEST",
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    onClick = { navController.navigate(Destinations.ChestWorkoutScreen) } // Navigate to Chest Workout Screen
+                    onClick = { navController.navigate(Destinations.ChestWorkoutScreen) }
                 )
-                // Placeholder onClick for other cards
+
                 val placeholderOnClick = { /* Placeholder action */ }
                 WorkoutOptionCard(
-                    drawableId = R.drawable.biceps_workout, // Replace with actual resource IDs
+                    drawableId = R.drawable.biceps_workout,
                     title = "BICEPS",
                     modifier = Modifier.padding(horizontal = 16.dp),
                     onClick = { navController.navigate(Destinations.BicepsWorkoutScreen) }
                 )
                 WorkoutOptionCard(
-                    drawableId = R.drawable.abs_workout, // Replace with actual resource IDs
+                    drawableId = R.drawable.abs_workout,
                     title = "ABS",
                     modifier = Modifier.padding(horizontal = 16.dp),
                     onClick = { navController.navigate(Destinations.ABSWorkoutScreen) }
                 )
                 WorkoutOptionCard(
-                    drawableId = R.drawable.leg_workout, // Replace with actual resource IDs
+                    drawableId = R.drawable.leg_workout,
                     title = "LEG",
                     modifier = Modifier.padding(horizontal = 16.dp),
                     onClick = { navController.navigate(Destinations.LegWorkoutScreen) }

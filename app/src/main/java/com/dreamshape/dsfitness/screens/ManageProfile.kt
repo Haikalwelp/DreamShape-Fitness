@@ -89,14 +89,14 @@ fun ManageProfileScreen(navController: NavHostController) {
             )
         },
         bottomBar = {
-            BottomBar(navController = navController) // Include the BottomBar composable here
+            BottomBar(navController = navController)
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues) // Use padding from Scaffold
-                .padding(horizontal = 16.dp) // Additional horizontal padding
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

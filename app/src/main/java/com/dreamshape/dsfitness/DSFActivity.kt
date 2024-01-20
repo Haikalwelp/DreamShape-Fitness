@@ -19,17 +19,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize Google Places
+
         if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, "AIzaSyCsNVoVdvxpIyYcQfuCeIUi45gKDCSwSss") // Replace with your actual API key
+            Places.initialize(applicationContext, "AIzaSyCsNVoVdvxpIyYcQfuCeIUi45gKDCSwSss")
         }
 
         setContent {
             CustomMaterialTheme {
-                // Create a NavController
+
                 val navController = rememberNavController()
 
-                // Set up the navigation graph
                 DSFitnessNavGraph(navController)
             }
         }
@@ -40,8 +39,8 @@ class MainActivity : ComponentActivity() {
 fun CustomMaterialTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = lightColors(
-            primary = Color.Blue, // Modify the primary color as needed
-            background = Color(0xFFE0E0FF) // Define your desired lighter blue color here
+            primary = Color.Blue,
+            background = Color(0xFFE0E0FF)
         )
     ) {
         content()

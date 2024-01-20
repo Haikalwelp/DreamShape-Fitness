@@ -1,18 +1,24 @@
 package com.dreamshape.dsfitness.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.dreamshape.dsfitness.R
 import com.dreamshape.dsfitness.components.DSButton
 import com.dreamshape.dsfitness.components.DSImage
 import com.dreamshape.dsfitness.components.DSText
-import com.dreamshape.dsfitness.R
 
 @Composable
 fun WelcomeScreen(onGetStartedClick: () -> Unit) {
@@ -27,21 +33,21 @@ fun WelcomeScreen(onGetStartedClick: () -> Unit) {
             verticalArrangement = Arrangement.Center
         ) {
             DSImage(
-                image = painterResource(id = R.drawable.logo), // Make sure this is the correct resource ID
+                image = painterResource(id = R.drawable.logo),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f) // Adjust the weight to control the image size
+                    .weight(1f)
             )
             Spacer(modifier = Modifier.height(24.dp))
             DSText(
                 text = "DREAM SHAPE\n\nDREAM LIFE",
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally) // Align text to the center horizontally
+                    .align(Alignment.CenterHorizontally)
                     .padding(bottom = 120.dp)
             )
             DSButton(
                 text = "Get Started",
-                onClick = onGetStartedClick, // This will now trigger the navigation
+                onClick = onGetStartedClick,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth(0.8f)
