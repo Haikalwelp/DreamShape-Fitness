@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import com.dreamshape.dsfitness.GooglePlacesService
+import com.dreamshape.dsfitness.instances.RetrofitInstance
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -17,11 +19,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.libraries.places.api.net.PlacesClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @SuppressLint("PermissionLaunchedDuringComposition")
 @OptIn(ExperimentalPermissionsApi::class)
@@ -67,24 +70,36 @@ private fun setUpGoogleMap(googleMap: GoogleMap, context: Context) {
 
 @SuppressLint("MissingPermission")
 private fun fetchNearbyGyms(googleMap: GoogleMap, location: LatLng, context: Context) {
-    val placesClient: PlacesClient = Places.createClient(context)
-    val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
+    // Create an instance of the Retrofit service
+    val service = RetrofitInstance.retrofit.create(GooglePlacesService::class.java)
 
-    val request = FindCurrentPlaceRequest.newInstance(placeFields)
-    placesClient.findCurrentPlace(request).addOnSuccessListener { response ->
-        for (placeLikelihood in response.placeLikelihoods) {
-            val place = placeLikelihood.place
-            if (place.types?.contains(Place.Type.GYM) == true) {
-                place.latLng?.let {
+    // Make the network request
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = service.searchNearbyGyms(
+                location = "${location.latitude},${location.longitude}",
+                radius = 1500, // Adjust radius as needed
+                type = "gym", // "type" is deprecated, use "keyword" instead
+                keyword = "gym",
+                apiKey = "AIzaSyCg_Xb_B0uUD6hTngK0UsdR37CGSfjf7oI"
+            )
+            withContext(Dispatchers.Main) {
+                response.results.forEach { placeResult ->
                     googleMap.addMarker(
                         MarkerOptions()
-                            .title(place.name)
-                            .position(it)
+                            .title(placeResult.name)
+                            .position(LatLng(placeResult.geometry.location.lat, placeResult.geometry.location.lng))
                     )
                 }
+                val boundsBuilder = LatLngBounds.Builder()
+                response.results.forEach { placeResult ->
+                    boundsBuilder.include(LatLng(placeResult.geometry.location.lat, placeResult.geometry.location.lng))
+                }
+                val bounds = boundsBuilder.build()
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
             }
+        } catch (e: Exception) {
+            Log.e("MapComponent", "Error fetching nearby gyms: ${e.message}")
         }
-    }.addOnFailureListener { e ->
-        Log.e("MapComponent", "Error finding nearby gyms: ", e)
     }
 }
