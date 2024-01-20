@@ -311,7 +311,7 @@ fun BottomBar(navController: NavHostController){
     )
 
     BottomNavigation(
-        backgroundColor = Color(0xFF3B2645),
+        backgroundColor = Color(0xFF0D2136),
         contentColor = Color.White,
         elevation = 8.dp,
         modifier = Modifier
@@ -324,10 +324,11 @@ fun BottomBar(navController: NavHostController){
                     Icon(
                         item.icon,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
+                                tint = Color.White
                     )
                 },
-                label = { Text(item.title, fontSize = 9.sp) },
+                label = { Text(item.title, fontSize = 9.sp, color = Color.White) },
                 selected = selectedItem == index,
                 onClick = {
                     selectedItem = index
@@ -647,4 +648,24 @@ fun GifImage(
         modifier = modifier.fillMaxWidth(),
     )
 }
+
+@Composable
+fun RedButton(text: String, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+        modifier = Modifier
+            .padding(8.dp)
+            .height(48.dp) // Adjust the height as needed
+    ) {
+        Text(text = text, color = Color.White)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RedButtonPreview() {
+    RedButton(text = "Log Out", onClick = {})
+}
+
 

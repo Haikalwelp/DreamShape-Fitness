@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -53,23 +54,34 @@ fun RegistrationScreen(
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var showLoading by remember { mutableStateOf(false) }
+    var emailError by remember { mutableStateOf("") }
+
     val registrationState by viewModel.registrationState.observeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
+    fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
 
     LaunchedEffect(registrationState) {
         when (registrationState) {
             RegistrationViewModel.RegistrationState.SUCCESS -> {
                 viewModel.userFirstName.value?.let { firstName ->
                     navController.navigate("success/$firstName")
+                    showLoading = false
                 }
             }
             RegistrationViewModel.RegistrationState.EMAIL_ALREADY_REGISTERED -> {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar("Email already registered")
+                    showLoading = false
                 }
             }
-            else -> {}
+            else -> {
+                showLoading = false
+            }
         }
     }
 
@@ -94,13 +106,39 @@ fun RegistrationScreen(
         DSInputField(value = lastName, onValueChange = { lastName = it }, label = "Last Name", leadingIcon = Icons.Default.Person)
         Spacer(Modifier.height(16.dp))
 
-        DSInputField(value = email, onValueChange = { email = it }, label = "Email", leadingIcon = Icons.Default.Email)
+        DSInputField(
+            value = email,
+            onValueChange = {
+                email = it
+                emailError = if (isValidEmail(it)) "" else "Invalid email format"
+            },
+            label = "Email",
+            leadingIcon = Icons.Default.Email
+        )
+        if (emailError.isNotEmpty()) {
+            Text(text = emailError, color = Color.Red)
+        }
         Spacer(Modifier.height(16.dp))
 
         DSInputField(value = password, onValueChange = { password = it }, label = "Password", leadingIcon = Icons.Default.Lock, isPassword = true)
         Spacer(Modifier.height(32.dp))
 
-        DSButton(text = "Register", onClick = { viewModel.registerUser(firstName, lastName, email, password) })
+        DSButton(
+            text = "Register",
+            onClick = {
+                if (isValidEmail(email)) {
+                    showLoading = true
+                    viewModel.registerUser(firstName, lastName, email, password)
+                } else {
+                    emailError = "Invalid email format"
+                }
+            }
+        )
+
+        if (showLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
+
 
         // ClickableText for "Have an account? Login"
         val annotatedString = buildAnnotatedString {

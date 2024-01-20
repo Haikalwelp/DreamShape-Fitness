@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,7 +17,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,14 +37,14 @@ import com.dreamshape.dsfitness.components.OnboardingTitle
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var emailError by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf("") }
 
     val loginState by loginViewModel.loginState.observeAsState()
 
-    // React to login state changes
     LaunchedEffect(loginState) {
         when (loginState) {
             LoginViewModel.LoginState.SUCCESS -> {
-                // Check if profile is complete
                 loginViewModel.checkUserProfileComplete { isComplete ->
                     if (isComplete) {
                         navController.navigate(Destinations.HomeScreen)
@@ -49,8 +53,27 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                     }
                 }
             }
-            // ... handle other states ...
-            else -> {}
+            LoginViewModel.LoginState.INVALID_USER -> {
+                emailError = "User not found"
+                passwordError = ""
+            }
+            LoginViewModel.LoginState.INVALID_CREDENTIALS -> {
+                emailError = ""
+                passwordError = "Invalid credentials"
+            }
+            LoginViewModel.LoginState.LOADING -> {
+                // Optionally handle loading state, if needed.
+            }
+            LoginViewModel.LoginState.ERROR -> {
+                // General error handling.
+                emailError = "Login error"
+                passwordError = "Login error"
+            }
+            else -> {
+                // Reset error messages for other states.
+                emailError = ""
+                passwordError = ""
+            }
         }
     }
 
@@ -64,16 +87,22 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
             value = email,
             onValueChange = { email = it },
             label = "Email",
-            leadingIcon = Icons.Default.Email // Assuming you have an email icon
+            leadingIcon = Icons.Default.Email
         )
+        if (emailError.isNotEmpty()) {
+            Text(text = emailError, color = Color.Red)
+        }
         Spacer(modifier = Modifier.height(16.dp))
         DSInputField(
             value = password,
             onValueChange = { password = it },
             label = "Password",
-            leadingIcon = Icons.Default.Lock, // Assuming you have a lock icon
+            leadingIcon = Icons.Default.Lock,
             isPassword = true
         )
+        if (passwordError.isNotEmpty()) {
+            Text(text = passwordError, color = Color.Red)
+        }
         Spacer(modifier = Modifier.height(32.dp))
         DSButton(
             text = "Login",
@@ -81,7 +110,9 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 loginViewModel.loginUser(email, password)
             }
         )
-        // Optionally add more UI elements like "Forgot Password?" or "Sign Up" links
+        if (loginState == LoginViewModel.LoginState.LOADING) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
     }
 }
 

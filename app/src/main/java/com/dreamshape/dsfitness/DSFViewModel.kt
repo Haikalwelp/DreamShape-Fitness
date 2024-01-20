@@ -9,6 +9,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -248,6 +249,7 @@ class ManageUserProfileViewModel : ViewModel() {
     val manageProfileState: LiveData<ManageProfileState> = _manageProfileState
 
     fun updateProfile(weight: String, height: String) {
+        _manageProfileState.value = ManageProfileState.LOADING
         val userId = auth.currentUser?.uid ?: return
 
         val userProfile = hashMapOf(
@@ -297,9 +299,22 @@ class ManageUserProfileViewModel : ViewModel() {
 
     enum class ManageProfileState {
         IDLE,
+        LOADING,
         SUCCESS,
         ERROR
     }
 }
+
+class LogoutViewModel(private val navController: NavHostController) : ViewModel() {
+    private val auth = FirebaseAuth.getInstance()
+
+    fun logout() {
+        auth.signOut()
+        navController.navigate("LoginScreen") {
+            popUpTo("ManageProfileScreen") { inclusive = true }
+        }
+    }
+}
+
 
 

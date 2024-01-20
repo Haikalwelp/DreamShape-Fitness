@@ -1,5 +1,7 @@
 package com.dreamshape.dsfitness.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -17,6 +19,8 @@ import com.dreamshape.dsfitness.components.SectionTitle
 
 @Composable
 fun NutritionScreen(navController: NavHostController) {
+    val context = LocalContext.current
+
     Scaffold(
         bottomBar = {
             BottomBar(navController = navController) // Include the BottomBar composable here
@@ -30,10 +34,14 @@ fun NutritionScreen(navController: NavHostController) {
             FoodItem(name = "Egg", calories = 68, drawableId = R.drawable.egg)
             FoodItem(name = "Salmon", calories = 250, drawableId = R.drawable.fish)
             FoodItem(name = "Bread", calories = 300, drawableId = R.drawable.bread)
-            MoreInformationButton(onClick = { /* Handle more info click */ })
+            MoreInformationButton(onClick = {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.livofy.com/health/gym-diet-plan/"))
+                context.startActivity(intent)
+            })
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
