@@ -1,6 +1,7 @@
 package com.dreamshape.dsfitness
 
 import CompleteProfileScreen
+import LegWorkoutScree
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -22,7 +23,6 @@ import com.dreamshape.dsfitness.screens.WorkoutPlanScreen
 import com.dreamshape.dsfitness.screens.workout.ABSWorkoutScreen
 import com.dreamshape.dsfitness.screens.workout.BicepsWorkoutScreen
 import com.dreamshape.dsfitness.screens.workout.ChestWorkoutScreen
-import com.dreamshape.dsfitness.screens.workout.LegWorkoutScreen
 
 object Destinations {
     const val WelcomeScreen = "welcome"
@@ -86,7 +86,7 @@ fun DSFitnessNavGraph(navController: NavHostController) {
             BicepsWorkoutScreen() // Call your ChestWorkoutScreen composable here
         }
         composable(Destinations.LegWorkoutScreen) {
-            LegWorkoutScreen() // Call your ChestWorkoutScreen composable here
+            LegWorkoutScree() // Call your ChestWorkoutScreen composable here
         }
         composable("workoutPlan") {
             WorkoutPlanScreen(navController) // Call your ChestWorkoutScreen composable here

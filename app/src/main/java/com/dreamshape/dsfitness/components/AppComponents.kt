@@ -3,10 +3,10 @@
 package com.dreamshape.dsfitness.components
 
 import android.app.DatePickerDialog
+import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -72,10 +72,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
+import coil.size.Size
 import com.dreamshape.dsfitness.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+
+
 
 @Composable
 fun DSImage(modifier: Modifier = Modifier, image: Painter) {
@@ -566,50 +574,43 @@ fun ExerciseCard(
     exerciseNumber: Int,
     exerciseName: String,
     repsInfo: String,
-    onVideoClick: () -> Unit
+    gifUrl: String
 ) {
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
-        elevation = 2.dp // Correct usage
-    )  {
+        elevation = 2.dp
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
-            androidx.compose.material.Text(
+            // Using GifImage to display the GIF
+            GifImage(
+                gifUrl = gifUrl,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16f / 9f) // Adjust aspect ratio as needed
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
                 text = "$exerciseNumber. $exerciseName",
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(8.dp))
-            androidx.compose.material.Text(
+            Text(
                 text = repsInfo,
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(110.dp, 48.dp)
-                        .background(Color.LightGray, RoundedCornerShape(8.dp))
-                        .clickable { onVideoClick() },
-                    contentAlignment = Alignment.Center
-                ) {
-                    androidx.compose.material.Text(
-                        "Video Link",
-                        color = Color.DarkGray
-                    )
-                }
-            }
         }
     }
 }
+
+
 
 
 @Preview(showBackground = true)
@@ -619,8 +620,30 @@ fun DatePickerComponentPreview() {
 }
 
 
-
-
-
-
+@Composable
+fun GifImage(
+    gifUrl: String,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            if (SDK_INT >= 28) {
+                add(ImageDecoderDecoder.Factory())
+            } else {
+                add(GifDecoder.Factory())
+            }
+        }
+        .build()
+    Image(
+        painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(context).data(data = gifUrl).apply {
+                size(Size.ORIGINAL)
+            }.build(),
+            imageLoader = imageLoader
+        ),
+        contentDescription = null,
+        modifier = modifier.fillMaxWidth(),
+    )
+}
 

@@ -84,8 +84,8 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.android.libraries.places:places:3.3.0")
     implementation("com.google.android.engage:engage-core:1.3.1")
-
-
+    implementation ("io.coil-kt:coil-compose:2.5.0")
+    implementation ("io.coil-kt:coil-gif:2.5.0")
 
 
 
